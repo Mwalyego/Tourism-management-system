@@ -37,15 +37,16 @@ The Tourism Management System is a web application designed to manage tourism ac
 
 - **Backend Framework**: Django
 - **Content Management**: Django CMS
-- **APIs**: Django REST Framework (if needed)
-- **Payment Integration**: Stripe, PayPal, or Square
-- **QR Code Generation**: `qrcode` Python library
-- **PDF Generation**: `ReportLab` or `WeasyPrint`
-- **Maps**: Google Maps API or OpenStreetMap
+- **APIs**: (if needed)
+- **Payment Integration**: 
+- **QR Code Generation**: 
+- **PDF Generation**: 
+- **Maps**: 
 
 ## Installation
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/repository-name.git
-   cd repository-name
+  git clone https://github.com/Mwalyego/tourism-management-system.git
+  cd tourism-management-system
+
