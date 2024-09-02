@@ -1,0 +1,34 @@
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
+# Ignore Django migrations
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Ignore environment files
+.env
+venv/
+*.env
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# Ignore compiled code and other artifacts
+*.o
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# Ignore backup files
+*.bak
+*.swp
+*.swo
