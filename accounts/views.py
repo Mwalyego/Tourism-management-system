@@ -35,6 +35,7 @@ def register(request):
             if User.objects.filter(username=username).exists():
                 #print('Username taken')
                 messages.info(request,'Username taken')
+                
             elif User.objects.filter(email=email).exists():
                 #print('Email taken')
                 messages.info(request,'Email taken')
