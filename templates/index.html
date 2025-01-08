@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Travela - Tourism Website Template</title>
+        <title>Tembea nasi</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -44,28 +44,37 @@
         <div class="container-fluid bg-primary px-5 d-none d-lg-block">
             <div class="row gx-0">
                 <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <!-- <div class="d-inline-flex align-items-center" style="height: 45px;">
                         <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="accounts/register"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
-                        <a href="accounts/login"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
-                        <div class="dropdown">
+
+                        {% if user.is_authenticated %}
+                      <div>{{user.username}}</div>  
+
+                        <a href="accounts/logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                        <!--  <div class="dropdown">
                             <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> My Dashboard</small></a>
                             <div class="dropdown-menu rounded">
                                 <a href="#" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
                                 <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
                                 <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
                                 <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                                 <a href="accounts/logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a> 
+                        
                             </div>
-                        </div>
+                           
+                        </div> -->
+                        {% else %}
+                        <a href="accounts/register"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
+                        <a href="accounts/login"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -76,7 +85,7 @@
         <div class="container-fluid position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Travela</h1>
+                    <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>Here we go</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -88,7 +97,7 @@
                         <a href="about.html" class="nav-item nav-link">About</a>
                         <a href="services.html" class="nav-item nav-link">Services</a>
                      <!--<a href="packages.html" class="nav-item nav-link">Packages</a> -->
-                        <a href="blog.html" class="nav-item nav-link">Blog</a>
+                        <!--<a href="blog.html" class="nav-item nav-link">Blog</a>-->
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu m-0">
@@ -1720,7 +1729,7 @@
                             <a href=""><i class="fas fa-angle-right me-2"></i> Cookie policy</a>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
+                    <!-- <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item">
                             <div class="row gy-3 gx-2 mb-4">
                                 <div class="col-xl-6">
@@ -1759,7 +1768,7 @@
                                 <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
                                 <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -1771,14 +1780,14 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-6 text-center text-md-end mb-md-0">
-                        <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Your Site Name</a>, All right reserved.
+                        <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Tembea nasi</a>, All right reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-start">
+                    <!-- <div class="col-md-6 text-center text-md-start"> -->
                         <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                         <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                         <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                        Designed By <a class="text-white" href="{% static 'https://htmlcodex.com' %}">HTML Codex</a> Distributed By <a href="https://themewagon.com">ThemeWagon</a>
-                    </div>
+                        <!-- Designed By <a class="text-white" href="{% static 'https://htmlcodex.com' %}">HTML Codex</a> Distributed By <a href="https://themewagon.com">ThemeWagon</a> -->
+                    <!-- </div> -->
                     </div>
                 </div>
             </div>
