@@ -13,7 +13,7 @@ The Tourism Management System is a web application designed to manage tourism ac
 - **Payment Integration**: Users can make payments for bookings using integrated payment gateways.
 - **Ticket Generation**: Generate downloadable tickets with booking details, including QR codes for security.
 - **Map Integration**: Provide maps for user directions and location services.
-- **Auto Control Numbers**: Use unique booking reference numbers for each transaction.
+- **Auto Control Numbers(any way that could be possible)**: Use unique booking reference numbers for each transaction.
 
 ### User Roles
 
