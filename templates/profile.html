@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-container">
+    <h2>My Bookings</h2>
+    <table class="bookings-table">
+        <thead>
+            <tr>
+                <th>Attraction</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.attraction.name }}</td>
+                <td>
+                    {% if booking.status == "pending" %}
+                        <span style="color: orange;">Pending</span>
+                    {% elif booking.status == "approved" %}
+                        <span style="color: green;">Approved</span>
+                    {% else %}
+                        <span style="color: red;">Cancelled</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if booking.status == "approved" %}
+                        <a href="{% url 'download_ticket' booking.id %}" class="btn btn-success">Download Ticket</a>
+                    {% else %}
+                        <button disabled class="btn btn-secondary">No Ticket</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No bookings found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+    .bookings-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .bookings-table th, .bookings-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+    .bookings-table th {
+        background-color: #f4f4f4;
+    }
+    .btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+</style>
+{% endblock %}

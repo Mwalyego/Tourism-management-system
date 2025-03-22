@@ -3,10 +3,13 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
-import qrcode # type: ignore
-from io import BytesIO
-from django.core.files.base import ContentFile
+import uuid
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
+from django.template.loader import render_to_string
+import pdfkit
+from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -14,71 +17,69 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Destination(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
 
 class Attraction(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    destination=models.ForeignKey(Destination,on_delete=models.CASCADE,related_name='attractions')
     location = models.CharField(max_length=255)
+    price=models.IntegerField()
     image = models.ImageField(upload_to='attractions/')
 
     def __str__(self):
         return self.name
-
-class Tourist(User):
-    # Inherits from Django's built-in User model
+    
+class Tourist(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    # Add any additional fields here
+
 
 class Booking(models.Model):
-    tourist = models.ForeignKey(Tourist, on_delete=models.CASCADE)
-    attraction = models.ForeignKey(Attraction, on_delete=models.CASCADE)
-    booking_date = models.DateTimeField(auto_now_add=True)
-    booking_number = models.CharField(max_length=100, unique=True)
-    payment_status = models.CharField(max_length=50, choices=[('Paid', 'Paid'), ('Pending', 'Pending')])
+    STATUS_CHOICES = [
+        ("pending", "Pending Payment"),
+        ("approved", "Approved"),
+        ("cancelled", "Cancelled"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    attraction = models.ForeignKey("Attraction", on_delete=models.CASCADE)
+    booking_date = models.DateTimeField(default=timezone.now)  # Ensure default value is set
+    booking_number = models.CharField(max_length=12, unique=True, editable=False)
+    status = models.CharField(max_length=20, default="pending")
 
     def save(self, *args, **kwargs):
         if not self.booking_number:
-            self.booking_number = self.generate_booking_number()
-        super().save(*args, **kwargs)
-
-    def generate_booking_number(self):
-        # Generate a unique booking number
-        return f'BOOK-{self.pk}'
-
-    def __str__(self):
-        return f'Booking {self.booking_number} by {self.tourist.username}'
-
-class Ticket(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
-    qr_code = models.ImageField(upload_to='tickets/')
-
-    def save(self, *args, **kwargs):
-        qr = qrcode.QRCode(version=1, box_size=10, border=4)
-        qr.add_data(self.booking.booking_number)
-        qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white')
-        qr_io = BytesIO()
-        img.save(qr_io, format='PNG')
-        qr_file = ContentFile(qr_io.getvalue(), 'qr_code.png')
-        self.qr_code.save('qr_code.png', qr_file, save=False)
+            self.booking_number = str(uuid.uuid4().hex[:12].upper())  # Generate a unique booking number
+        if not self.booking_date:
+            self.booking_date = timezone.now()  # Explicitly set booking_date if not provided
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Ticket for Booking {self.booking.booking_number}'
+        return f"{self.user.username} - {self.attraction.name} ({self.booking_date}) - {self.status}"
+    
+def download_ticket(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
 
-class Service(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    provider = models.ForeignKey(Tourist, on_delete=models.CASCADE)  # Assuming provider is a Tourist for simplicity
+    if booking.status != "approved":
+        return HttpResponse("Payment not approved yet.", status=403)
 
-    def __str__(self):
-        return self.name
+    html = render_to_string("ticket_template.html", {"booking": booking})
+    pdf = pdfkit.from_string(html, False)
 
-class ContentCreator(models.Model):
-    user = models.OneToOneField(Tourist, on_delete=models.CASCADE)
-    bio = models.TextField()
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f"attachment; filename=ticket_{booking.id}.pdf"
 
-    def __str__(self):
-        return self.user.username
+    return response
+
+
+
+
+
 

@@ -15,15 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
-admin.site.site_header="Tembea nasi"
-admin.site.site_title="Tembea nasi"
-admin.site.index_title="Here we go"
+# Customizing Django Admin Headers
+admin.site.site_header = "Tembea Nasi"
+admin.site.site_title = "Tembea Nasi"
+admin.site.index_title = "Here we go"
 
 urlpatterns = [
     path('', include('TourismMS.urls')),
+    path('accounts/', include('accounts.urls')),
+
+    # Override the Django admin login page to use the custom login page
+    path('admin/login/', auth_views.LoginView.as_view(template_name='login.html'), name='admin_login'),
+
+    # Admin panel URL (will use the logged-in session)
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls'))
 ]
+
+urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 

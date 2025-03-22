@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .ticket-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <h1>Booking Ticket</h1>
+        <div class="details">
+            <p><strong>Booking ID:</strong> {{ booking.id }}</p>
+            <p><strong>User:</strong> {{ booking.user.username }}</p>
+            <p><strong>Attraction:</strong> {{ booking.attraction.name }}</p>
+            <p><strong>Date:</strong> {{ booking.booking_date }}</p>
+            <p><strong>Status:</strong> {{ booking.status }}</p>
+        </div>
+    </div>
+</body>
+</html>

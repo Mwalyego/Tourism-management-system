@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Tourism Management System is a web application designed to manage tourism activities. Built using Django and Django CMS, this system allows users to search and explore tourist areas, manage bookings, and generate tickets. It provides a comprehensive solution for both tourists and content creators, with an admin interface for system management.
+The Tourism Management System is a web application designed to manage tourism activities. Built using Django this system allows users to search and explore tourist areas, manage bookings, and generate tickets. It provides a comprehensive solution for tourists.
 
 ## Features
 
@@ -25,18 +25,13 @@ The Tourism Management System is a web application designed to manage tourism ac
 - **Download Tickets**: Download and manage tickets.
 - **Edit Profile and Services**: Update their profile and manage booked services.
 
-#### Content Creators (Admins)
-- **Manage Information**: Update and manage information about tourist attractions.
-- **Manage Services**: Oversee services such as tour guiding and hotel bookings.
-
-#### Super Admin
+#### Administrator
 - **User Management**: Manage all users, including content creators and tourists.
 - **System Management**: Oversee and manage the entire system, including configurations and settings.
 
 ## Technical Stack
 
 - **Backend Framework**: Django
-- **Content Management**: Django CMS
 - **APIs**: (if needed)
 - **Payment Integration**: 
 - **QR Code Generation**: 
