@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils import timezone  # Import timezone
 from django.template.loader import render_to_string
 import pdfkit
-
+from django.db.models import Count
 
 # Create your views here.
 
@@ -30,7 +30,23 @@ def destination(request):
     return render(request,"destination.html")
 
 def normDashboard(request):
-    return render(request,"normDashboard.html")
+    # Get the most popular destinations based on bookings
+    popular_destinations = Destination.objects.annotate(
+        booking_count=Count('attractions__booking')
+    ).order_by('-booking_count')[:5]  # Limit to top 5 destinations
+
+    # Add an image from one of the attractions for each destination
+    destinations_with_images = []
+    for destination in popular_destinations:
+        attraction = destination.attractions.first()  # Get the first attraction for the destination
+        if attraction and attraction.image:  # Ensure the attraction has an image
+            destinations_with_images.append({
+                'name': destination.name,
+                'image': attraction.image.url,
+                'booking_count': destination.booking_count
+            })
+
+    return render(request, 'normDashboard.html', {'popular_destinations': destinations_with_images})
 
 def get_attractions_by_destination(request):
     destination_id = request.GET.get("destination_id")

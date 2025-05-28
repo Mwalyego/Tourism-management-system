@@ -21,15 +21,17 @@ from django.conf.urls.static import static
 
 # Customizing Django Admin Headers
 admin.site.site_header = "Tembea Nasi"
-admin.site.site_title = "Tembea Nasi"
+admin.site.site_title = "Let's Go"
 admin.site.index_title = "Here we go"
 
 urlpatterns = [
     path('', include('TourismMS.urls')),
     path('accounts/', include('accounts.urls')),
+    #path('hotels/',include('hotels.urls')),
+    #path('restaurants/',include('restaurants.urls')),
 
     # Override the Django admin login page to use the custom login page
-    path('admin/login/', auth_views.LoginView.as_view(template_name='login.html'), name='admin_login'),
+    #path('admin/login/', auth_views.LoginView.as_view(template_name='login.html'), name='admin_login'),
 
     # Admin panel URL (will use the logged-in session)
     path('admin/', admin.site.urls),

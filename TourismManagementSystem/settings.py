@@ -24,14 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'e$@^79_dbe(-^a228oa$pe4e49e$4n=h0)f_3-_nano=^5l=n8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ALLOWED_HOSTS = ['aguu.pythonanywhere.com', '127.0.0.1:8000', 'localhost:8000']]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    #'hotels.apps.HotelConfig',
+    #'restaurants.apps.RestaurantsConfig',
     'jazzmin',
     'accounts.apps.AccountsConfig',
     'TourismMS.apps.TourismmsConfig',

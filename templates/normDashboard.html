@@ -3,12 +3,76 @@
 {% block title %}User Dashboard{% endblock %}
 
 {% block content %}
-    <div class="card">
-        <h2>Welcome, User!</h2>
-        <p>This is your dashboard where you can manage your profile, settings, and more.</p>
+<div class="dashboard-container">
+    <div class="slideshow-container">
+        <div class="slides-wrapper">
+            {% for destination in popular_destinations %}
+            <div class="slide">
+                <img src="{{ destination.image }}" alt="{{ destination.name }}" class="slide-image">
+                <div class="slide-caption">
+                    <h3>{{ destination.name }}</h3>
+                    <p>Bookings: {{ destination.booking_count }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="card">
-        <h2>Recent Activities</h2>
-        <p>No recent activities.</p>
-    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+    .slideshow-container {
+        position: relative;
+        max-width: 100%;
+        overflow: hidden;
+        margin: auto;
+    }
+    .slides-wrapper {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        width: calc(100% * {{ popular_destinations|length }} / 2); /* Adjust width based on the number of slides */
+    }
+    .slide {
+        flex: 0 0 25%; /* Each slide takes 50% of the container width */
+        box-sizing: border-box;
+        position: relative;
+    }
+    .slide-image {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .slide-caption {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<script>
+    let currentSlide = 0;
+    const slidesWrapper = document.querySelector('.slides-wrapper');
+    const slides = document.querySelectorAll('.slide');
+
+    function showNextSlide() {
+        // Calculate the total number of "steps" (each step shows two slides)
+        const totalSteps = Math.ceil(slides.length / 2);
+
+        // Move to the next step
+        currentSlide = (currentSlide + 1) % totalSteps;
+
+        // Update the transform property to slide horizontally
+        slidesWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    // Automatically move to the next slide every 3 seconds
+    setInterval(showNextSlide, 3000);
+</script>
 {% endblock %}
