@@ -14,9 +14,6 @@ cycler==0.12.1
 decorator==5.1.1
 dj-database-url==2.2.0
 Django==5.1.4
-django-classy-tags==3.0.1
-django-cms==3.8.2
-django-filer==3.0.3
 django-formtools==2.4
 django-jazzmin==3.0.1
 django-js-asset==2.0.0
