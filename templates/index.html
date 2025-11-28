@@ -122,7 +122,7 @@
                                     <p class="mb-5 fs-5">
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="#">Discover Now</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="accounts/register">Discover Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                                     <p class="mb-5 fs-5">
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="#">Discover Now</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="accounts/register">Discover Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                     <p class="mb-5 fs-5"> 
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="#">Discover Now</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="accounts/register">Discover Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -170,10 +170,10 @@
         </div>
         <div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);">
             <div class="container">
-                <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
-                    <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand">
-                    <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
-                </div>
+                <form method="get" action="" class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
+                    <input name="q" value="{{ search_query|default_if_none:'' }}" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="search" placeholder="Eg: Dodoma">
+                    <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
+                </form>
             </div>
         </div>
         <!-- Navbar & Hero End -->
@@ -187,42 +187,135 @@
                     <h5 class="section-title px-3">Destination</h5>
                     <h1 class="mb-0">Popular Destination</h1>
                 </div>
+                {% if search_query %}
+                <div class="container mb-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Search results for "{{ search_query }}"</h5>
+                        </div>
+                    </div>
+                    {% if search_results %}
+                    <div class="row g-4 mt-2">
+                        {% for r in search_results %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="destination-item rounded overflow-hidden">
+                                {% if r.image %}
+                                <div class="position-relative overflow-hidden">
+                                    <img src="{{ r.image }}" class="img-fluid w-100" alt="{{ r.name }}" style="height: 220px; object-fit: cover;">
+                                </div>
+                                {% else %}
+                                <div style="height: 220px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                    <span class="text-muted">No image</span>
+                                </div>
+                                {% endif %}
+                                <div class="p-3">
+                                    <h6 class="text-primary mb-1">{{ r.destination_name }}</h6>
+                                    <h5 class="mb-1">{{ r.name }}</h5>
+                                    <p class="mb-2">{{ r.description|truncatewords:15 }}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">{{ r.location }}</span>
+                                        <span class="text-primary fw-bold">${{ r.price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No results found.</p>
+                    {% endif %}
+                </div>
+                {% endif %}
                 <div class="tab-class text-center">
                     <ul class="nav nav-pills d-inline-flex justify-content-center mb-5">
                         <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-all">
                                 <span class="text-dark" style="width: 150px;">All</span>
                             </a>
                         </li>
+                        {% for destination in destinations %}
                         <li class="nav-item">
-                            <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                <span class="text-dark" style="width: 150px;">USA</span>
+                            <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-{{ destination.id }}">
+                                <span class="text-dark" style="width: 150px;">{{ destination.name }}</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                <span class="text-dark" style="width: 150px;">Canada</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                <span class="text-dark" style="width: 150px;">Europe</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                <span class="text-dark" style="width: 150px;">China</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-6">
-                                <span class="text-dark" style="width: 150px;">Singapore</span>
-                            </a>
-                        </li>
+                        {% endfor %}
                     </ul>
 
+                    <!-- Tab content: All destinations and attractions -->
+                    <div class="tab-content">
+                        <!-- All tab -->
+                        <div id="tab-all" class="tab-pane fade show active">
+                            <div class="row g-4">
+                                {% for dest_info in destination_data %}
+                                    {% for attraction in dest_info.attractions %}
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="destination-item rounded overflow-hidden">
+                                            {% if attraction.image %}
+                                            <div class="position-relative overflow-hidden">
+                                                <img src="{{ attraction.image }}" class="img-fluid w-100" alt="{{ attraction.name }}" style="height: 300px; object-fit: cover;">
+                                            </div>
+                                            {% else %}
+                                            <div style="height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                                <span class="text-muted">No image</span>
+                                            </div>
+                                            {% endif %}
+                                            <div class="p-4">
+                                                <h6 class="text-primary mb-2">{{ dest_info.name }}</h6>
+                                                <h5>{{ attraction.name }}</h5>
+                                                <p class="mb-2">{{ attraction.description|truncatewords:15 }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <!-- <span class="text-muted">{{ attraction.location }}</span> -->
+                                                    <!-- <span class="text-primary fw-bold">${{ attraction.price }}</span> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Individual destination tabs -->
+                        {% for dest_info in destination_data %}
+                        <div id="tab-{{ dest_info.id }}" class="tab-pane fade">
+                            <div class="row g-4">
+                                {% for attraction in dest_info.attractions %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="destination-item rounded overflow-hidden">
+                                        {% if attraction.image %}
+                                        <div class="position-relative overflow-hidden">
+                                            <img src="{{ attraction.image }}" class="img-fluid w-100" alt="{{ attraction.name }}" style="height: 300px; object-fit: cover;">
+                                        </div>
+                                        {% else %}
+                                        <div style="height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                            <span class="text-muted">No image</span>
+                                        </div>
+                                        {% endif %}
+                                        <div class="p-4">
+                                            <h6 class="text-primary mb-2">{{ dest_info.name }}</h6>
+                                            <h5>{{ attraction.name }}</h5>
+                                            <p class="mb-2">{{ attraction.description|truncatewords:15 }}</p>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">{{ attraction.location }}</span>
+                                                <span class="text-primary fw-bold">${{ attraction.price }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-12">
+                                    <p class="text-center text-muted">No attractions found for this destination.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
         <!-- Gallery Start -->
-        <div class="container-fluid gallery py-5 my-5">
+        <!-- <div class="container-fluid gallery py-5 my-5">
             <div class="mx-auto text-center mb-5" style="max-width: 900px;">
                 <h5 class="section-title px-3">Our Gallery</h5>
                 <h1 class="mb-4">Tourism & Traveling Gallery.</h1>
@@ -257,10 +350,10 @@
                         </a>
                     </li>
                 </ul>
-                
+                 -->
 
         <!-- Testimonial Start -->
-        <div class="container-fluid testimonial py-5">
+        <!-- <div class="container-fluid testimonial py-5">
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
                     <h5 class="section-title px-3">Testimonial</h5>
@@ -349,11 +442,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Testimonial End -->
 
         <!-- Subscribe Start -->
-        <div class="container-fluid subscribe py-5">
+        <!-- <div class="container-fluid subscribe py-5">
             <div class="container text-center py-5">
                 <div class="mx-auto text-center" style="max-width: 900px;">
                     <h5 class="subscribe-title px-3">Subscribe</h5>
@@ -366,7 +459,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Subscribe End -->
 
         <!-- Footer Start -->
@@ -376,20 +469,20 @@
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
                             <h4 class="mb-4 text-white">Get In Touch</h4>
-                            <a href=""><i class="fas fa-home me-2"></i> 123 Street, New York, USA</a>
-                            <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
-                            <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
-                            <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +012 345 67890</a>
-                            <div class="d-flex align-items-center">
+                            <a href=""><i class="fas fa-home me-2"></i>TZ</a>
+                            <a href=""><i class="fas fa-envelope me-2"></i> aguu@gmail.com</a>
+                            <a href=""><i class="fas fa-phone me-2"></i> +255 624 879 748</a>
+                            <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +255 714 300 482</a>
+                            <!-- <div class="d-flex align-items-center">
                                 <i class="fas fa-share fa-2x text-white me-2"></i>
                                 <a class="btn-square btn btn-primary rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn-square btn btn-primary rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
                                 <a class="btn-square btn btn-primary rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
                                 <a class="btn-square btn btn-primary rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
+                    <!-- <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
                             <h4 class="mb-4 text-white">Company</h4>
                             <a href=""><i class="fas fa-angle-right me-2"></i> About</a>
@@ -399,8 +492,8 @@
                             <a href=""><i class="fas fa-angle-right me-2"></i> Gift Cards</a>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Magazine</a>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
+                    </div> -->
+                    <!-- <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
                             <h4 class="mb-4 text-white">Support</h4>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Contact</a>
@@ -410,7 +503,7 @@
                             <a href=""><i class="fas fa-angle-right me-2"></i> Sitemap</a>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Cookie policy</a>
                         </div>
-                    </div>
+                    </div> -->
                     
                     </div>
                 </div>

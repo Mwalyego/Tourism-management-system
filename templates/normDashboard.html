@@ -4,75 +4,88 @@
 
 {% block content %}
 <div class="dashboard-container">
-    <div class="slideshow-container">
-        <div class="slides-wrapper">
-            {% for destination in popular_destinations %}
-            <div class="slide">
-                <img src="{{ destination.image }}" alt="{{ destination.name }}" class="slide-image">
-                <div class="slide-caption">
-                    <h3>{{ destination.name }}</h3>
-                    <p>Bookings: {{ destination.booking_count }}</p>
+    <h2>Overview</h2>
+
+    <div class="cards-grid">
+        <div class="card">
+            <h3>Popular Destinations</h3>
+            <div class="card-list">
+                {% for destination in popular_destinations %}
+                <div class="dest-card">
+                    {% if destination.image %}
+                    <img src="{{ destination.image }}" alt="{{ destination.name }}" class="dest-image">
+                    {% endif %}
+                    <div class="dest-info">
+                        <strong>{{ destination.name }}</strong>
+                        <div>Bookings: {{ destination.booking_count }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <div>No popular destinations yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Destination with Most Attractions</h3>
+            {% if destination_most_attractions %}
+            <div class="dest-card single">
+                {% if destination_most_attractions.image %}
+                <img src="{{ destination_most_attractions.image }}" alt="{{ destination_most_attractions.name }}" class="dest-image">
+                {% endif %}
+                <div class="dest-info">
+                    <strong>{{ destination_most_attractions.name }}</strong>
+                    <div>Attractions: {{ destination_most_attractions.attraction_count }}</div>
                 </div>
             </div>
-            {% endfor %}
+            {% else %}
+            <div>No data available.</div>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h3>Recently Booked Destinations</h3>
+            <div class="card-list">
+                {% for destination in recent_popular_destinations %}
+                <div class="dest-card">
+                    {% if destination.image %}
+                    <img src="{{ destination.image }}" alt="{{ destination.name }}" class="dest-image">
+                    {% endif %}
+                    <div class="dest-info">
+                        <strong>{{ destination.name }}</strong>
+                        <div>Last booked: {{ destination.last_booked }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <div>No recent bookings yet.</div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
-
 <style>
     .dashboard-container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-    }
-    .slideshow-container {
-        position: relative;
-        max-width: 100%;
-        overflow: hidden;
-        margin: auto;
-    }
-    .slides-wrapper {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-        width: calc(100% * {{ popular_destinations|length }} / 2); /* Adjust width based on the number of slides */
-    }
-    .slide {
-        flex: 0 0 25%; /* Each slide takes 50% of the container width */
-        box-sizing: border-box;
-        position: relative;
-    }
-    .slide-image {
+        /* Use full available width inside the `.content` area */
         width: 100%;
-        border-radius: 10px;
+        max-width: none;
+        margin: 0;
+        padding: 12px 0;
+        box-sizing: border-box;
     }
-    .slide-caption {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: start;
     }
+    .card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .card-list { display:flex; flex-direction:column; gap:12px; }
+    .dest-card { display:flex; gap:12px; align-items:center; }
+    .dest-card.single { align-items:flex-start; }
+    .dest-image { width:80px; height:60px; object-fit:cover; border-radius:6px; }
+    .dest-info { font-size:14px; }
+    @media (max-width:900px) { .cards-grid { grid-template-columns: 1fr; } }
 </style>
 
-<script>
-    let currentSlide = 0;
-    const slidesWrapper = document.querySelector('.slides-wrapper');
-    const slides = document.querySelectorAll('.slide');
-
-    function showNextSlide() {
-        // Calculate the total number of "steps" (each step shows two slides)
-        const totalSteps = Math.ceil(slides.length / 2);
-
-        // Move to the next step
-        currentSlide = (currentSlide + 1) % totalSteps;
-
-        // Update the transform property to slide horizontally
-        slidesWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
-
-    // Automatically move to the next slide every 3 seconds
-    setInterval(showNextSlide, 3000);
-</script>
+<!-- No slideshow JS: dashboard uses simple cards for clarity -->
 {% endblock %}

@@ -56,10 +56,8 @@
         <h1>Welcome {{request.user.username}}!!</h1>
     </div>
     <div class="sidebar">
-        <a href="{% url 'normDashboard' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'normDashboard' %}"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{% url 'destination' %}"><i class="fas fa-map"></i> Destinations</a>
-        <a href="#Hotel"><i class="fas fa-hotel"></i> Hotel Bookings</a>
-        <a href="#Restaurant"><i class="fas fa-utensils"></i> Restaurants</a>
         <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
         <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
